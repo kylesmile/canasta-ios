@@ -21,6 +21,7 @@
 		277375F218A13EA80041C7BC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277375D418A13EA80041C7BC /* UIKit.framework */; };
 		277375FA18A13EA80041C7BC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 277375F818A13EA80041C7BC /* InfoPlist.strings */; };
 		277375FC18A13EA80041C7BC /* Canasta_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 277375FB18A13EA80041C7BC /* Canasta_iOSTests.m */; };
+		41048AD4A8F844AFA771D569 /* libPods-Canasta-iOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 743042ACAB394D8993CBD72D /* libPods-Canasta-iOSTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		277375F718A13EA80041C7BC /* Canasta-iOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Canasta-iOSTests-Info.plist"; sourceTree = "<group>"; };
 		277375F918A13EA80041C7BC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		277375FB18A13EA80041C7BC /* Canasta_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Canasta_iOSTests.m; sourceTree = "<group>"; };
+		743042ACAB394D8993CBD72D /* libPods-Canasta-iOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Canasta-iOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F42582598BB545518FCB8C8A /* Pods-Canasta-iOSTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canasta-iOSTests.xcconfig"; path = "Pods/Pods-Canasta-iOSTests.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +76,7 @@
 				277375F018A13EA80041C7BC /* XCTest.framework in Frameworks */,
 				277375F218A13EA80041C7BC /* UIKit.framework in Frameworks */,
 				277375F118A13EA80041C7BC /* Foundation.framework in Frameworks */,
+				41048AD4A8F844AFA771D569 /* libPods-Canasta-iOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +90,7 @@
 				277375F518A13EA80041C7BC /* Canasta-iOSTests */,
 				277375CF18A13EA80041C7BC /* Frameworks */,
 				277375CE18A13EA80041C7BC /* Products */,
+				F42582598BB545518FCB8C8A /* Pods-Canasta-iOSTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,6 +110,7 @@
 				277375D218A13EA80041C7BC /* CoreGraphics.framework */,
 				277375D418A13EA80041C7BC /* UIKit.framework */,
 				277375EF18A13EA80041C7BC /* XCTest.framework */,
+				743042ACAB394D8993CBD72D /* libPods-Canasta-iOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -176,9 +182,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2773760218A13EA80041C7BC /* Build configuration list for PBXNativeTarget "Canasta-iOSTests" */;
 			buildPhases = (
+				15477F9DD9BE4B7FACC123F4 /* Check Pods Manifest.lock */,
 				277375EA18A13EA80041C7BC /* Sources */,
 				277375EB18A13EA80041C7BC /* Frameworks */,
 				277375EC18A13EA80041C7BC /* Resources */,
+				604C9A32872F4198A921D582 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -243,6 +251,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		15477F9DD9BE4B7FACC123F4 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		604C9A32872F4198A921D582 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-Canasta-iOSTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		277375C918A13EA80041C7BC /* Sources */ = {
@@ -403,6 +444,7 @@
 		};
 		2773760318A13EA80041C7BC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F42582598BB545518FCB8C8A /* Pods-Canasta-iOSTests.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Canasta-iOS.app/Canasta-iOS";
@@ -426,6 +468,7 @@
 		};
 		2773760418A13EA80041C7BC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F42582598BB545518FCB8C8A /* Pods-Canasta-iOSTests.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Canasta-iOS.app/Canasta-iOS";
@@ -462,6 +505,7 @@
 				2773760118A13EA80041C7BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2773760218A13EA80041C7BC /* Build configuration list for PBXNativeTarget "Canasta-iOSTests" */ = {
 			isa = XCConfigurationList;
@@ -470,6 +514,7 @@
 				2773760418A13EA80041C7BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
