@@ -8,12 +8,11 @@
 
 #import "CanastaGame.h"
 #import "CanastaDeck.h"
-#import "CanastaDiscardPile.h"
 
 @interface CanastaGame ()
 @property (nonatomic, strong) NSArray *hands;
 @property (nonatomic, strong) CanastaDeck *deck;
-@property (nonatomic, strong) CanastaDiscardPile *discardPile;
+@property (nonatomic, strong, readwrite) CanastaDiscardPile *discardPile;
 @property (nonatomic, strong) NSArray *teams;
 @property (nonatomic, readwrite) NSUInteger turn;
 @end
@@ -40,6 +39,7 @@
 - (CanastaDeck *)deck {
     if(!_deck) {
         _deck = [CanastaDeck new];
+        [_deck shuffle];
     }
     return _deck;
 }

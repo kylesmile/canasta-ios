@@ -10,6 +10,7 @@
 #import "CanastaCard.h"
 #import "CanastaTeam.h"
 #import "CanastaHand.h"
+#import "CanastaDiscardPile.h"
 
 @interface CanastaGame : NSObject
 
@@ -24,4 +25,5 @@
 
 @interface CanastaGame (Properties)
 @property (nonatomic, readonly) NSUInteger turn;
+@property (nonatomic, readonly) CanastaDiscardPile *discardPile;
 @end

@@ -25,8 +25,8 @@
                     [self.cards addObject:[CanastaCard newWithRank:rank suit:suit]];
                 }
             }
-            [self.cards addObject:[CanastaCard newJoker:BLACKJOKER]];
-            [self.cards addObject:[CanastaCard newJoker:REDJOKER]];
+            [self.cards addObject:[CanastaCard newJoker:BLACK]];
+            [self.cards addObject:[CanastaCard newJoker:RED]];
         }
     }
     return self;

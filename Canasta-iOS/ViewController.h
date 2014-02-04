@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+
+@property (nonatomic, weak) IBOutlet UICollectionView *handView;
+@property (nonatomic, weak) IBOutlet UIImageView *deckView;
+@property (nonatomic, weak) IBOutlet UIImageView *discardPileView;
+@property (nonatomic, weak) IBOutlet UIImageView *freezingCardView;
 
 @end
