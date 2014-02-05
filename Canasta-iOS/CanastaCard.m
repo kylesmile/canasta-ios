@@ -82,4 +82,14 @@
     return self.rank == THREE && self.color == BLACK;
 }
 
+- (NSString *)description {
+    NSArray *rankNames = @[@"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"Jack", @"Queen", @"King", @"Ace", @"Joker"];
+    NSArray *suitNames = @[@"Spades", @"Clubs", @"Hearts", @"Diamonds", @"Red", @"Black"];
+    if (self.rank == JOKER) {
+        return [NSString stringWithFormat:@"%@ %@", suitNames[self.suit], rankNames[self.rank]];
+    } else {
+        return [NSString stringWithFormat:@"%@ of %@", rankNames[self.rank], suitNames[self.suit]];
+    }
+}
+
 @end

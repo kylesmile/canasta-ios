@@ -113,6 +113,18 @@ describe(@"Canasta Card", ^{
 
         });
     });
+    
+    it(@"has a string representation", ^{
+        CanastaCard *redJoker = [CanastaCard newJoker:RED];
+        CanastaCard *blackJoker = [CanastaCard newJoker:BLACK];
+        CanastaCard *aceOfSpades = [CanastaCard newWithRank:ACE suit:SPADES];
+        CanastaCard *sevenOfClubs = [CanastaCard newWithRank:SEVEN suit:CLUBS];
+        
+        [[[redJoker description] should] equal:@"Red Joker"];
+        [[[blackJoker description] should] equal:@"Black Joker"];
+        [[[aceOfSpades description] should] equal:@"Ace of Spades"];
+        [[[sevenOfClubs description] should] equal:@"7 of Clubs"];
+    });
 });
 
 SPEC_END
