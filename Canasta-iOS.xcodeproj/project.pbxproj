@@ -214,6 +214,7 @@
 		277376C718A14F790041C7BC /* sj.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sj.png; sourceTree = "<group>"; };
 		277376C818A14F790041C7BC /* sk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sk.png; sourceTree = "<group>"; };
 		277376C918A14F790041C7BC /* sq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sq.png; sourceTree = "<group>"; };
+		27A719F918A2D75C00D16BEC /* CanastaGameDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CanastaGameDelegate.h; sourceTree = "<group>"; };
 		743042ACAB394D8993CBD72D /* libPods-Canasta-iOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Canasta-iOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F42582598BB545518FCB8C8A /* Pods-Canasta-iOSTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canasta-iOSTests.xcconfig"; path = "Pods/Pods-Canasta-iOSTests.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -345,6 +346,7 @@
 				2773762418A142F30041C7BC /* CanastaDumbRobot.m */,
 				2773762518A142F30041C7BC /* CanastaGame.h */,
 				2773762618A142F30041C7BC /* CanastaGame.m */,
+				27A719F918A2D75C00D16BEC /* CanastaGameDelegate.h */,
 				2773762718A142F30041C7BC /* CanastaHand.h */,
 				2773762818A142F30041C7BC /* CanastaHand.m */,
 				2773762918A142F30041C7BC /* CanastaMeld.h */,
