@@ -23,6 +23,10 @@
 
 @implementation CanastaGame
 
+- (void)gimmeANotification {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Note" object:self];
+}
+
 #pragma mark - Initialization
 
 - (NSArray *)hands {
@@ -108,11 +112,15 @@
 #pragma mark - Move Checking
 
 - (BOOL)canDraw {
-    return !self.hasDrawn;
+    if ([[self.deck size] isEqual:@0] || self.hasDrawn) {
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 - (BOOL)turnValid {
-    return self.stagedDiscard != nil;
+    return self.stagedDiscard != nil && self.hasDrawn;
 }
 
 #pragma mark - Game Interface
@@ -121,6 +129,7 @@
     if ([self canDraw]) {
         [self drawForPlayer:self.turn];
         self.hasDrawn = YES;
+        [self.delegate handChanged];
     }
 }
 
@@ -139,7 +148,10 @@
     if ([self turnValid]) {
         [self.discardPile discard:self.stagedDiscard];
         self.stagedDiscard = nil;
+        self.hasDrawn = NO;
         [self nextTurn];
+        [self.delegate discardPileChanged];
+        [self.delegate newTurn];
     }
 }
 

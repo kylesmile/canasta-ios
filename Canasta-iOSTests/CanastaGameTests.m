@@ -8,6 +8,7 @@
 
 #import "Kiwi.h"
 #import "CanastaGame.h"
+#import "CanastaGameDelegate.h"
 #import "CanastaHand.h"
 #import "CanastaDeck.h"
 #import "CanastaDiscardPile.h"
@@ -85,12 +86,17 @@ describe(@"Canasta Game", ^{
     
     describe(@"game interface", ^{
         context(@"with a rigged game", ^{
+            __block id gameDelegate;
             beforeEach(^{
+                gameDelegate = [KWMock mockForProtocol:@protocol(CanastaGameDelegate)];
+                game.delegate = gameDelegate;
+                
                 [[game hand:1].cards removeAllObjects];
-                [[game hand:1] takeCards:@[[CanastaCard newWithRank:SEVEN suit:DIAMONDS],
+                [[game hand:1] takeCards:@[[CanastaCard newWithRank:THREE suit:CLUBS],
+                                           [CanastaCard newWithRank:SEVEN suit:DIAMONDS],
                                            [CanastaCard newWithRank:SEVEN suit:HEARTS],
-                                           [CanastaCard newWithRank:SEVEN suit:SPADES],
-                                           [CanastaCard newWithRank:THREE suit:CLUBS]]];
+                                           [CanastaCard newWithRank:SEVEN suit:SPADES]]];
+                
                 game.discardPile.cards = [@[[CanastaCard newWithRank:ACE suit:SPADES]] mutableCopy];
                 [game.deck.cards addObject:[CanastaCard newWithRank:NINE suit:SPADES]];
                 [game.deck.cards addObject:[CanastaCard newWithRank:ACE suit:SPADES]];
@@ -98,23 +104,33 @@ describe(@"Canasta Game", ^{
             });
             
             it(@"allows drawing cards", ^{
+                [[[gameDelegate should] receive] handChanged];
                 [game draw];
                 [[[game hand:1].cards[4] should] equal:[CanastaCard newWithRank:ACE suit:SPADES]];
                 [[@([game canDraw]) should] beNo];
                 [game draw];
                 [[[game hand:1].cards[4] should] equal:[CanastaCard newWithRank:ACE suit:SPADES]];
+                
+                CanastaGame *game2 = [CanastaGame new];
+                [[[[game2 hand:1] size] should] equal:@11];
+                [game2.deck.cards removeAllObjects];
+                [[@([game2 canDraw]) should] beNo];
+                [game2 draw];
+                [[[[game2 hand:1] size] should] equal:@11];
             });
             
             it(@"can stage and run discards", ^{
-                [game draw];
+                [game stageDiscard:1];
+                [[@([game turnValid]) should] beNo];
                 
-                [game stageDiscard:0];
+                [[[gameDelegate should] receive] handChanged];
+                [game draw];
                 [[@([game turnValid]) should] beYes];
                 [[[game.discardPile topCard] should] equal:[CanastaCard newWithRank:ACE suit:SPADES]];
                 [[[game stagedDiscard] should] equal:[CanastaCard newWithRank:SEVEN suit:DIAMONDS]];
                 
                 [[[[game hand:1] size] should] equal:@4];
-                [game stageDiscard:2];
+                [game stageDiscard:0];
                 [[[game.discardPile topCard] should] equal:[CanastaCard newWithRank:ACE suit:SPADES]];
                 [[[game stagedDiscard] should] equal:[CanastaCard newWithRank:THREE suit:CLUBS]];
                 
@@ -124,23 +140,41 @@ describe(@"Canasta Game", ^{
                 [game finishTurn];
                 [[@(game.turn) should] equal:@1];
                 
-                [game stageDiscard:4];
+                [game stageDiscard:0];
                 [[[game stagedDiscard] should] equal:[CanastaCard newWithRank:THREE suit:CLUBS]];
                 
+                [[[gameDelegate should] receive] newTurn];
+                [[[gameDelegate should] receive] discardPileChanged];
                 [game finishTurn];
                 [[[game.discardPile topCard] should] equal:[CanastaCard newWithRank:THREE suit:CLUBS]];
                 [[[game stagedDiscard] should] beNil];
                 [[@(game.turn) should] equal:@2];
             });
             
+            it(@"properly handles drawing cards across multiple turns", ^{
+                // Make it not complain about the delegate getting messages
+                [[gameDelegate should] receive:@selector(handChanged) withCountAtLeast:0];
+                [[gameDelegate should] receive:@selector(newTurn) withCountAtLeast:0];
+                [[gameDelegate should] receive:@selector(discardPileChanged) withCountAtLeast:0];
+                
+                for (NSInteger i = 0; i < 8; i ++) {
+                    [[@([game canDraw]) should] beYes];
+                    [game draw];
+                    [game stageDiscard:0];
+                    [game finishTurn];
+                }
+            });
+            
 //            it(@"can stage and run melds", ^{
 //                [[game hand:1].cards addObject:[CanastaCard newJoker:BLACK]];
+//                
 //                [[@([game meldSlotCount]) should] equal:@1];
-//                [[@([game canStageMeld:0 cardIndex:0]) should] beYes];
+//                
+//                [[@([game canStageMeld:0 cardIndex:0]) should] beNo];
 //                [game stageMeld:0 cardIndex:0];
-//                [[@([game meldSlotCount]) should] equal:@2];
-//                [[[game canStageMeld:1 cardIndex:0] should] beNo];
-//                [[[game canStageMeld:0 cardIndex:0] should] beYes];
+//                [[@([game meldSlotCount]) should] equal:@1];
+//                [[@([game canStageMeld:1 cardIndex:0]) should] beNo];
+//                [[@([game canStageMeld:0 cardIndex:0]) should] beYes];
 //            });
         });
     });
