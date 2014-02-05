@@ -7,10 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CanastaGameDelegate.h"
 
-@interface ViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface ViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, CanastaGameDelegate>
+
+- (void)drawCard;
 
 @property (nonatomic, weak) IBOutlet UICollectionView *handView;
+@property (weak, nonatomic) IBOutlet UIView *redThreesView;
 @property (nonatomic, weak) IBOutlet UIImageView *deckView;
 @property (nonatomic, weak) IBOutlet UIImageView *discardPileView;
 @property (nonatomic, weak) IBOutlet UIImageView *freezingCardView;

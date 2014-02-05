@@ -12,7 +12,8 @@
 
 - (void)takeTurn {
     [self.game draw];
-//    [self.game discard:0];
+    [self.game stageDiscard:0];
+    [self.game finishTurn];
 }
 
 @end
