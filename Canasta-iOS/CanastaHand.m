@@ -27,11 +27,21 @@
 }
 
 - (void)takeCard:(CanastaCard *)card {
-    [_cards addObject:card];
+    [self.cards addObject:card];
+    [self sortHand];
 }
 
 - (void)takeCards:(NSArray *)cards {
-    [_cards addObjectsFromArray:cards];
+    [self.cards addObjectsFromArray:cards];
+    [self sortHand];
+}
+
+- (void)sortHand {
+    [self.cards sortUsingComparator:^NSComparisonResult(CanastaCard *card1, CanastaCard *card2){
+        if (card1.rank > card2.rank) return NSOrderedDescending;
+        if (card1.rank < card2.rank) return NSOrderedAscending;
+        return NSOrderedSame;
+    }];
 }
 
 - (CanastaCard *)playCard:(NSUInteger)index {

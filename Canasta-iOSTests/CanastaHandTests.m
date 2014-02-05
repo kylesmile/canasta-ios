@@ -14,7 +14,7 @@ SPEC_BEGIN(CanastaHandTests)
 describe(@"Canasta Hand", ^{
     __block CanastaHand *hand;
     
-    beforeAll(^{
+    beforeEach(^{
         hand = [CanastaHand new];
     });
     
@@ -30,25 +30,43 @@ describe(@"Canasta Hand", ^{
         
         [[[hand size] should] equal:@3];
         
-        [[[hand cards][0] should] equal:[CanastaCard newWithRank:THREE suit:CLUBS]];
+        [[hand.cards[0] should] equal:[CanastaCard newWithRank:THREE suit:CLUBS]];
     });
     
-    it(@"can play cards", ^{
-        CanastaCard *card = [hand playCard:1];
+    context(@"already containing cards", ^{
+        beforeEach(^{
+            [hand takeCards:@[[CanastaCard newWithRank:THREE suit:CLUBS], [CanastaCard newJoker:RED], [CanastaCard newWithRank:ACE suit:SPADES]]];
+        });
         
-        [[card should] equal:[CanastaCard newJoker:RED]];
+        it(@"sorts its cards", ^{
+            [hand takeCards:@[[CanastaCard newWithRank:TWO suit:SPADES], [CanastaCard newWithRank:EIGHT suit:DIAMONDS], [CanastaCard newWithRank:SIX suit:CLUBS], [CanastaCard newWithRank:KING suit:HEARTS]]];
+            
+            [[hand.cards[0] should] equal:[CanastaCard newWithRank:TWO suit:SPADES]];
+            [[hand.cards[1] should] equal:[CanastaCard newWithRank:THREE suit:CLUBS]];
+            [[hand.cards[2] should] equal:[CanastaCard newWithRank:SIX suit:CLUBS]];
+            [[hand.cards[3] should] equal:[CanastaCard newWithRank:EIGHT suit:DIAMONDS]];
+            [[hand.cards[4] should] equal:[CanastaCard newWithRank:KING suit:HEARTS]];
+            [[hand.cards[5] should] equal:[CanastaCard newWithRank:ACE suit:SPADES]];
+            [[hand.cards[6] should] equal:[CanastaCard newJoker:RED]];
+        });
         
-        [[[hand size] should] equal:@2];
-        
-        [hand takeCards:@[[CanastaCard newJoker:BLACK], [CanastaCard newWithRank:SEVEN suit:DIAMONDS]]];
-        
-        NSMutableIndexSet *indexes = [NSMutableIndexSet indexSetWithIndex:1];
-        [indexes addIndex:3];
-        NSArray *cards = [hand playCards:indexes];
-        [[cards[0] should] equal:[CanastaCard newWithRank:ACE suit:SPADES]];
-        [[cards[1] should] equal:[CanastaCard newWithRank:SEVEN suit:DIAMONDS]];
-        
-        [[[hand size] should] equal:@2];
+        it(@"can play cards", ^{
+            CanastaCard *card = [hand playCard:2];
+            
+            [[card should] equal:[CanastaCard newJoker:RED]];
+            
+            [[[hand size] should] equal:@2];
+            
+            [hand takeCards:@[[CanastaCard newJoker:BLACK], [CanastaCard newWithRank:SEVEN suit:DIAMONDS]]];
+            
+            NSMutableIndexSet *indexes = [NSMutableIndexSet indexSetWithIndex:1];
+            [indexes addIndex:2];
+            NSArray *cards = [hand playCards:indexes];
+            [[cards[0] should] equal:[CanastaCard newWithRank:SEVEN suit:DIAMONDS]];
+            [[cards[1] should] equal:[CanastaCard newWithRank:ACE suit:SPADES]];
+            
+            [[[hand size] should] equal:@2];
+        });
     });
 });
 
