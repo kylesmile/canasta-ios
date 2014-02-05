@@ -12,7 +12,7 @@
 
 - (void)takeTurn {
     [self.game draw];
-    [self.game discard:0];
+//    [self.game discard:0];
 }
 
 @end

@@ -15,16 +15,20 @@
 @property (nonatomic, strong, readwrite) CanastaDiscardPile *discardPile;
 @property (nonatomic, strong) NSArray *teams;
 @property (nonatomic, readwrite) NSUInteger turn;
+
+@property (nonatomic) BOOL hasDrawn;
+
+@property (nonatomic, strong, readwrite) CanastaCard *stagedDiscard;
 @end
 
 @implementation CanastaGame
 
+#pragma mark - Initialization
+
 - (NSArray *)hands {
     if (!_hands) {
         _hands = @[[CanastaHand new], [CanastaHand new], [CanastaHand new], [CanastaHand new]];
-        for (CanastaHand *hand in _hands) {
-            [hand takeCards:[self.deck draw:11]];
-        }
+        [self deal];
     }
     return _hands;
 }
@@ -59,27 +63,14 @@
     return _turn;
 }
 
+#pragma mark - Game Data
+
 - (NSUInteger)teamNumberForPlayer:(NSUInteger)playerNumber {
     if (playerNumber == 1 || playerNumber == 3) {
         return 1;
     } else {
         return 2;
     }
-}
-
-- (void)meldRank:(RANK)rank cardIndexes:(NSIndexSet *)indexes {
-    [[self team:[self teamNumberForPlayer:self.turn]] meldRank:rank cards:[[self hand:self.turn] playCards:indexes]];
-}
-
-- (void)discard:(NSUInteger)cardIndex {
-    CanastaCard *card = [[self hand:self.turn] playCard:cardIndex];
-    [self.discardPile discard:card];
-    [self nextTurn];
-}
-
-- (void)nextTurn {
-    self.turn += 1;
-    if (self.turn == 5) self.turn = 1;
 }
 
 - (CanastaTeam *)team:(NSUInteger)number {
@@ -90,8 +81,76 @@
     return self.hands[number - 1];
 }
 
-- (void)draw {
-    [[self hand:self.turn] takeCard:[self.deck draw]];
+#pragma mark - Helper Methods
+
+- (void)nextTurn {
+    self.turn += 1;
+    if (self.turn == 5) self.turn = 1;
 }
+
+- (void)drawForPlayer:(NSUInteger)player {
+    CanastaCard *card = [self.deck draw];
+    while ([card isRedThree]) {
+        [[self team:[self teamNumberForPlayer:player]] addRedThree:card];
+        card = [self.deck draw];
+    }
+    [[self hand:player] takeCard:card];
+}
+
+- (void)deal {
+    for (NSInteger i = 0; i < 11; i++) {
+        for (NSInteger player = 1; player < 5; player++) {
+            [self drawForPlayer:player];
+        }
+    }
+}
+
+#pragma mark - Move Checking
+
+- (BOOL)canDraw {
+    return !self.hasDrawn;
+}
+
+- (BOOL)turnValid {
+    return self.stagedDiscard != nil;
+}
+
+#pragma mark - Game Interface
+
+- (void)draw {
+    if ([self canDraw]) {
+        [self drawForPlayer:self.turn];
+        self.hasDrawn = YES;
+    }
+}
+
+- (void)unstageDiscard {
+    [[self hand:self.turn] takeCard:self.stagedDiscard];
+    self.stagedDiscard = nil;
+}
+
+- (void)stageDiscard:(NSUInteger)index {
+    CanastaCard *cardToStage = [[self hand:self.turn] playCard:index];
+    if (self.stagedDiscard) [[self hand:self.turn] takeCard:self.stagedDiscard];
+    self.stagedDiscard = cardToStage;
+}
+
+- (void)finishTurn {
+    if ([self turnValid]) {
+        [self.discardPile discard:self.stagedDiscard];
+        self.stagedDiscard = nil;
+        [self nextTurn];
+    }
+}
+
+//- (void)meldRank:(RANK)rank cardIndexes:(NSIndexSet *)indexes {
+//    [[self team:[self teamNumberForPlayer:self.turn]] meldRank:rank cards:[[self hand:self.turn] playCards:indexes]];
+//}
+//
+//- (void)discard:(NSUInteger)cardIndex {
+//    CanastaCard *card = [[self hand:self.turn] playCard:cardIndex];
+//    [self.discardPile discard:card];
+//    [self nextTurn];
+//}
 
 @end

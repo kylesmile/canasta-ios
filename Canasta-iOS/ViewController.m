@@ -53,7 +53,7 @@
 
 - (NSString *)imageNameForCard:(CanastaCard *)card {
     NSArray *ranks = @[@"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"j", @"k", @"q", @"a", @"j"];
-    NSArray *suits = @[@"s", @"h", @"c", @"d", @"r", @"b"];
+    NSArray *suits = @[@"s", @"c", @"h", @"d", @"r", @"b"];
     if (card.rank == JOKER) {
         return [NSString stringWithFormat:@"%@%@", ranks[card.rank], suits[card.suit]];
     }
@@ -82,7 +82,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if (self.game.turn == 1) {
-        [self.game discard:indexPath.item];
+//        [self.game discard:indexPath.item];
         [self reloadDiscardPile];
         [collectionView deleteItemsAtIndexPaths:@[indexPath]];
         

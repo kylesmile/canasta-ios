@@ -15,15 +15,25 @@
 @interface CanastaGame : NSObject
 
 - (NSUInteger)teamNumberForPlayer:(NSUInteger)playerNumber;
-- (void)meldRank:(RANK)rank cardIndexes:(NSIndexSet *)indexes;
-- (void)discard:(NSUInteger)cardIndex;
+//- (void)meldRank:(RANK)rank cardIndexes:(NSIndexSet *)indexes;
+//- (void)discard:(NSUInteger)cardIndex;
 - (CanastaTeam *)team:(NSUInteger)number;
 - (CanastaHand *)hand:(NSUInteger)number;
+
+- (BOOL)canDraw;
+- (BOOL)turnValid;
+
 - (void)draw;
+- (void)unstageDiscard;
+- (void)stageDiscard:(NSUInteger)index;
+- (CanastaCard *)stagedDiscard;
+- (void)finishTurn;
 
 @end
 
 @interface CanastaGame (Properties)
 @property (nonatomic, readonly) NSUInteger turn;
 @property (nonatomic, readonly) CanastaDiscardPile *discardPile;
+
+@property (nonatomic, strong, readonly) CanastaCard *stagedDiscard;
 @end
