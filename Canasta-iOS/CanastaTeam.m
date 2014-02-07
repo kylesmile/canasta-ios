@@ -10,7 +10,7 @@
 
 @interface CanastaTeam ()
 @property (nonatomic, strong, readwrite) NSMutableArray *melds;
-@property (nonatomic, strong) NSMutableArray *redThrees;
+@property (nonatomic, strong, readwrite) NSMutableArray *redThrees;
 @end
 
 @implementation CanastaTeam

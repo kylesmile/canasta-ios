@@ -7,34 +7,31 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CanastaGameDelegate.h"
 #import "CanastaCard.h"
 #import "CanastaTeam.h"
 #import "CanastaHand.h"
 #import "CanastaDiscardPile.h"
+#import "CanastaStagedMeld.h"
 
 @interface CanastaGame : NSObject
 
-@property (nonatomic, weak) id <CanastaGameDelegate> delegate;
-
 - (NSUInteger)teamNumberForPlayer:(NSUInteger)playerNumber;
-//- (void)meldRank:(RANK)rank cardIndexes:(NSIndexSet *)indexes;
-//- (void)discard:(NSUInteger)cardIndex;
 - (CanastaTeam *)team:(NSUInteger)number;
 - (CanastaHand *)hand:(NSUInteger)number;
+- (NSUInteger)meldSlotCount;
+- (CanastaStagedMeld *)stagedMeld:(NSUInteger)number;
+- (NSUInteger)stagedScore;
 
 - (BOOL)canDraw;
-- (BOOL)turnValid;
 - (BOOL)canStageMeld:(NSUInteger)meld cardIndex:(NSUInteger)index;
-- (NSUInteger)meldSlotCount;
+- (BOOL)turnValid;
 
 - (void)draw;
 - (void)unstageDiscard;
 - (void)stageDiscard:(NSUInteger)index;
 - (void)stageMeld:(NSUInteger)meld cardIndex:(NSUInteger)index;
+- (void)unstageTopCardInMeld:(NSUInteger)meld;
 - (void)finishTurn;
-
-- (void)gimmeANotification;
 @end
 
 @interface CanastaGame (Properties)

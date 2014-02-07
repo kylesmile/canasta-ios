@@ -14,6 +14,14 @@
 
 @implementation CanastaMeld
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        _cards = [NSMutableArray new];
+    }
+    return self;
+}
+
 + (instancetype)newWithCards:(NSArray *)cards {
     return [[self alloc] initWithCards:cards];
 }

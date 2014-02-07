@@ -25,4 +25,5 @@
 
 @interface CanastaTeam (Properties)
 @property (nonatomic, strong, readonly) NSArray *melds;
+@property (nonatomic, strong, readonly) NSArray *redThrees;
 @end

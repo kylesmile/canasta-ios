@@ -1,5 +1,5 @@
 //
-//  CanastaGameDelegate.h
+//  CanastaGameObserver.h
 //  Canasta-iOS
 //
 //  Created by Kyle Smith on 2/5/14.
@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol CanastaGameDelegate <NSObject>
+@protocol CanastaGameObserver <NSObject>
 
 - (void)newTurn;
 - (void)handChanged;
 - (void)discardPileChanged;
+- (void)newRedThree;
+- (void)stagedMeldsChanged;
 
 @end

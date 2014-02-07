@@ -39,9 +39,11 @@ describe(@"Canasta Team", ^{
         
         [team addRedThree:[CanastaCard newWithRank:THREE suit:DIAMONDS]];
         [[[team redThreeCount] should] equal:@1];
+        [[team.redThrees[0] should] equal:[CanastaCard newWithRank:THREE suit:DIAMONDS]];
         
         [team addRedThree:[CanastaCard newWithRank:THREE suit:HEARTS]];
         [[[team redThreeCount] should] equal:@2];
+        [[team.redThrees[1] should] equal:[CanastaCard newWithRank:THREE suit:HEARTS]];
         
         [team addRedThree:[CanastaCard newWithRank:SEVEN suit:CLUBS]];
         [[[team redThreeCount] should] equal:@2];
