@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		276740A318A54D690097EE94 /* MoveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 276740A218A54D690097EE94 /* MoveViewController.m */; };
 		277375D118A13EA80041C7BC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277375D018A13EA80041C7BC /* Foundation.framework */; };
 		277375D318A13EA80041C7BC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277375D218A13EA80041C7BC /* CoreGraphics.framework */; };
 		277375D518A13EA80041C7BC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 277375D418A13EA80041C7BC /* UIKit.framework */; };
@@ -96,6 +97,8 @@
 		2773770018A14F790041C7BC /* sj.png in Resources */ = {isa = PBXBuildFile; fileRef = 277376C718A14F790041C7BC /* sj.png */; };
 		2773770118A14F790041C7BC /* sk.png in Resources */ = {isa = PBXBuildFile; fileRef = 277376C818A14F790041C7BC /* sk.png */; };
 		2773770218A14F790041C7BC /* sq.png in Resources */ = {isa = PBXBuildFile; fileRef = 277376C918A14F790041C7BC /* sq.png */; };
+		27832D4118A3EB7A00781A37 /* CanastaStagedMeld.m in Sources */ = {isa = PBXBuildFile; fileRef = 27832D4018A3EB7A00781A37 /* CanastaStagedMeld.m */; };
+		27832D4318A3EBB000781A37 /* CanastaStagedMeldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 27832D4218A3EBB000781A37 /* CanastaStagedMeldTests.m */; };
 		41048AD4A8F844AFA771D569 /* libPods-Canasta-iOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 743042ACAB394D8993CBD72D /* libPods-Canasta-iOSTests.a */; };
 /* End PBXBuildFile section */
 
@@ -110,6 +113,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		276740A118A54D690097EE94 /* MoveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoveViewController.h; sourceTree = "<group>"; };
+		276740A218A54D690097EE94 /* MoveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoveViewController.m; sourceTree = "<group>"; };
+		276740A418A54D950097EE94 /* MoveViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoveViewControllerDelegate.h; sourceTree = "<group>"; };
 		277375CD18A13EA80041C7BC /* Canasta-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Canasta-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		277375D018A13EA80041C7BC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		277375D218A13EA80041C7BC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -214,7 +220,10 @@
 		277376C718A14F790041C7BC /* sj.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sj.png; sourceTree = "<group>"; };
 		277376C818A14F790041C7BC /* sk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sk.png; sourceTree = "<group>"; };
 		277376C918A14F790041C7BC /* sq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sq.png; sourceTree = "<group>"; };
-		27A719F918A2D75C00D16BEC /* CanastaGameDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CanastaGameDelegate.h; sourceTree = "<group>"; };
+		27832D3F18A3EB7A00781A37 /* CanastaStagedMeld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanastaStagedMeld.h; sourceTree = "<group>"; };
+		27832D4018A3EB7A00781A37 /* CanastaStagedMeld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanastaStagedMeld.m; sourceTree = "<group>"; };
+		27832D4218A3EBB000781A37 /* CanastaStagedMeldTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanastaStagedMeldTests.m; sourceTree = "<group>"; };
+		27A719F918A2D75C00D16BEC /* CanastaGameObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CanastaGameObserver.h; sourceTree = "<group>"; };
 		743042ACAB394D8993CBD72D /* libPods-Canasta-iOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Canasta-iOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F42582598BB545518FCB8C8A /* Pods-Canasta-iOSTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Canasta-iOSTests.xcconfig"; path = "Pods/Pods-Canasta-iOSTests.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -285,6 +294,9 @@
 				277375E018A13EA80041C7BC /* AppDelegate.m */,
 				277375E518A13EA80041C7BC /* ViewController.h */,
 				277375E618A13EA80041C7BC /* ViewController.m */,
+				276740A118A54D690097EE94 /* MoveViewController.h */,
+				276740A218A54D690097EE94 /* MoveViewController.m */,
+				276740A418A54D950097EE94 /* MoveViewControllerDelegate.h */,
 				2773764618A1489A0041C7BC /* HandLayout.h */,
 				2773764718A1489A0041C7BC /* HandLayout.m */,
 				2773768D18A14EBA0041C7BC /* CardCell.h */,
@@ -318,6 +330,7 @@
 				2773763A18A1430B0041C7BC /* CanastaHandTests.m */,
 				2773763B18A1430B0041C7BC /* CanastaMeldTests.m */,
 				2773763C18A1430B0041C7BC /* CanastaTeamTests.m */,
+				27832D4218A3EBB000781A37 /* CanastaStagedMeldTests.m */,
 				277375FB18A13EA80041C7BC /* Canasta_iOSTests.m */,
 				277375F618A13EA80041C7BC /* Supporting Files */,
 			);
@@ -346,13 +359,15 @@
 				2773762418A142F30041C7BC /* CanastaDumbRobot.m */,
 				2773762518A142F30041C7BC /* CanastaGame.h */,
 				2773762618A142F30041C7BC /* CanastaGame.m */,
-				27A719F918A2D75C00D16BEC /* CanastaGameDelegate.h */,
+				27A719F918A2D75C00D16BEC /* CanastaGameObserver.h */,
 				2773762718A142F30041C7BC /* CanastaHand.h */,
 				2773762818A142F30041C7BC /* CanastaHand.m */,
 				2773762918A142F30041C7BC /* CanastaMeld.h */,
 				2773762A18A142F30041C7BC /* CanastaMeld.m */,
 				2773762B18A142F30041C7BC /* CanastaTeam.h */,
 				2773762C18A142F30041C7BC /* CanastaTeam.m */,
+				27832D3F18A3EB7A00781A37 /* CanastaStagedMeld.h */,
+				27832D4018A3EB7A00781A37 /* CanastaStagedMeld.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -611,10 +626,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				2773763418A142F30041C7BC /* CanastaTeam.m in Sources */,
+				27832D4118A3EB7A00781A37 /* CanastaStagedMeld.m in Sources */,
 				277375E718A13EA80041C7BC /* ViewController.m in Sources */,
 				2773762D18A142F30041C7BC /* CanastaCard.m in Sources */,
 				2773768F18A14EBA0041C7BC /* CardCell.m in Sources */,
 				2773762F18A142F30041C7BC /* CanastaDiscardPile.m in Sources */,
+				276740A318A54D690097EE94 /* MoveViewController.m in Sources */,
 				277375E118A13EA80041C7BC /* AppDelegate.m in Sources */,
 				2773763018A142F30041C7BC /* CanastaDumbRobot.m in Sources */,
 				2773763318A142F30041C7BC /* CanastaMeld.m in Sources */,
@@ -637,6 +654,7 @@
 				2773763E18A1430B0041C7BC /* CanastaDeckTests.m in Sources */,
 				2773764318A1430B0041C7BC /* CanastaMeldTests.m in Sources */,
 				2773764018A1430B0041C7BC /* CanastaDumbRobotTests.m in Sources */,
+				27832D4318A3EBB000781A37 /* CanastaStagedMeldTests.m in Sources */,
 				2773764218A1430B0041C7BC /* CanastaHandTests.m in Sources */,
 				2773764418A1430B0041C7BC /* CanastaTeamTests.m in Sources */,
 			);
