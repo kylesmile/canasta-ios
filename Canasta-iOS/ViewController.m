@@ -39,8 +39,10 @@
     self.handView.delegate = self;
     
     self.meldsView.dataSource = self;
+    self.meldsView.delegate = self;
     
     self.redThreesView.backgroundColor = [UIColor clearColor];
+    self.meldsView.backgroundColor = [UIColor clearColor];
     
     self.deckView.image = [UIImage imageNamed:@"backs_blue"];
     UITapGestureRecognizer *deckTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(drawCard)];
@@ -68,7 +70,11 @@
     if (collectionView == self.handView) {
         return [[[self.game hand:1] size] integerValue];
     } else {
-        return [[self.game team:1].melds count] + [self.game meldSlotCount] - 1;
+        if (self.game.turn == 1) {
+            return [self.game meldSlotCount] - 1;
+        } else {
+            return [[self.game team:1].melds count];
+        }
     }
 }
 
@@ -83,21 +89,12 @@
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Meld" forIndexPath:indexPath];
         
         UIImageView *cardImage;
+    
+        NSInteger i = 0;
+        NSInteger item = indexPath.item;
         
-        if (indexPath.item + 1 > [[self.game team:1].meldCount integerValue]) {
-            NSInteger item = indexPath.item - [[self.game team:1].meldCount integerValue];
-            NSInteger i = 0;
-            
-            for (CanastaCard *card in [self.game stagedMeld:item].cards) {
-                cardImage = [[UIImageView alloc] initWithImage:[self imageForCard:card]];
-                [cardImage setTransform:CGAffineTransformMakeTranslation(0.0, i*25.0)];
-                [cell addSubview:cardImage];
-                i++;
-            }
-        } else {
-            NSInteger i = 0;
-            
-            for (CanastaCard *card in [[self.game team:1].melds[indexPath.item] cards]) {
+        if (item + 1 <= [[self.game team:1].melds count]) {
+            for (CanastaCard *card in [[self.game team:1].melds[item] cards]) {
                 cardImage = [[UIImageView alloc] initWithImage:[self imageForCard:card]];
                 [cardImage setTransform:CGAffineTransformMakeTranslation(0.0, i*25.0)];
                 [cell addSubview:cardImage];
@@ -105,6 +102,17 @@
             }
         }
         
+        
+        if (self.game.turn == 1 && item + 1 <= [self.game meldSlotCount] - 1) {
+            for (CanastaCard *card in [self.game stagedMeld:item].cards) {
+                cardImage = [[UIImageView alloc] initWithImage:[self imageForCard:card]];
+                [cardImage setTransform:CGAffineTransformMakeTranslation(0.0, i*25.0)];
+                cardImage.layer.opacity = 0.8;
+                [cell addSubview:cardImage];
+                i++;
+            }
+        }
+    
         return cell;
     }
 }
@@ -154,7 +162,7 @@
 }
 
 - (void)newTurn {
-    
+    [self.meldsView reloadData];
 }
 
 - (void)newRedThree {
@@ -178,6 +186,7 @@
 
 - (void)stagedMeldsChanged {
     [self.meldsView reloadData];
+    [self.handView reloadData];
 }
 
 - (void)drawCard {
@@ -185,20 +194,23 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (self.game.turn == 1) {
-        MoveViewController *moveVC = [self.storyboard instantiateViewControllerWithIdentifier:@"move"];
-        moveVC.delegate = self;
-        self.selectedCard = indexPath;
-        
-        self.cardPopoverController = [[UIPopoverController alloc] initWithContentViewController:moveVC];
-        self.cardPopoverController.popoverContentSize = CGSizeMake(320.0, 200.0);
-        
-        CGRect cardFrame = [collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
-        CGRect collectionViewFrame = collectionView.frame;
-        CGRect cardRect = CGRectMake(collectionViewFrame.origin.x + cardFrame.origin.x, collectionViewFrame.origin.y + cardFrame.origin.y, cardFrame.size.width, cardFrame.size.height);
-        
-        [self.cardPopoverController presentPopoverFromRect:cardRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+        if (collectionView == self.handView) {
+                MoveViewController *moveVC = [self.storyboard instantiateViewControllerWithIdentifier:@"move"];
+                moveVC.delegate = self;
+                self.selectedCard = indexPath;
+                
+                self.cardPopoverController = [[UIPopoverController alloc] initWithContentViewController:moveVC];
+                self.cardPopoverController.popoverContentSize = CGSizeMake(320.0, 200.0);
+                
+                CGRect cardFrame = [collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
+                CGRect collectionViewFrame = collectionView.frame;
+                CGRect cardRect = CGRectMake(collectionViewFrame.origin.x + cardFrame.origin.x, collectionViewFrame.origin.y + cardFrame.origin.y, cardFrame.size.width, cardFrame.size.height);
+                
+                [self.cardPopoverController presentPopoverFromRect:cardRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+        } else {
+            [self.game unstageTopCardInMeld:indexPath.item];
+        }
     }
 }
 
@@ -212,7 +224,8 @@
     if ([self.game turnValid]) {
         [self.game finishTurn];
         [self drawDiscardPile];
-        [self.handView deleteItemsAtIndexPaths:@[self.selectedCard]];
+//        [self.handView deleteItemsAtIndexPaths:@[self.selectedCard]];
+        [self.handView reloadData];
 
         [self robotTurns];
     } else {
@@ -222,8 +235,11 @@
 
 - (void)meld:(NSUInteger)number {
     [self.cardPopoverController dismissPopoverAnimated:YES];
-    [self.game stageMeld:number cardIndex:self.selectedCard.item];
-    [self.handView deleteItemsAtIndexPaths:@[self.selectedCard]];
+    if ([self.game canStageMeld:number cardIndex:self.selectedCard.item]) {
+        [self.game stageMeld:number cardIndex:self.selectedCard.item];
+//        [self.handView deleteItemsAtIndexPaths:@[self.selectedCard]];
+        [self.handView reloadData];
+    }
 }
 
 @end
