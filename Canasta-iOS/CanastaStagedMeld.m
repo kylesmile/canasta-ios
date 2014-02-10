@@ -14,10 +14,30 @@
 
 @implementation CanastaStagedMeld
 
++ (instancetype)newWithMeld:(CanastaMeld *)meld {
+    return [[self alloc] initWithMeld:meld];
+}
+
 - (CanastaCard *)removeTopCard {
     CanastaCard *card = [self.cards lastObject];
     [self.cards removeLastObject];
     return card;
+}
+
+- (instancetype)initWithMeld:(CanastaMeld *)meld {
+    self = [super init];
+    if (self) {
+        _meld = meld;
+    }
+    return self;
+}
+
+- (RANK)rank {
+    if (self.meld) {
+        return [self.meld rank];
+    } else {
+        return [super rank];
+    }
 }
 
 @end

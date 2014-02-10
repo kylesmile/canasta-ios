@@ -19,6 +19,7 @@
 @property (nonatomic, strong) CanastaDeck *deck;
 @property (nonatomic, strong) CanastaDiscardPile *discardPile;
 @property (nonatomic, strong) NSArray *teams;
+@property (nonatomic) NSUInteger turn;
 @end
 
 @interface CanastaDeck (Testing)
@@ -227,6 +228,44 @@ describe(@"Canasta Game", ^{
                     [[[game team:1].meldCount should] equal:@1];
                   
                     [[NSNotificationCenter defaultCenter] removeObserver:gameObserver];
+                });
+                
+                it(@"can add to existing melds", ^{
+                    [game draw];
+                    [game stageMeld:0 cardIndex:1];
+                    [game stageMeld:0 cardIndex:1];
+                    [game stageMeld:0 cardIndex:1];
+                    [game stageDiscard:0];
+                    [game finishTurn];
+                    
+                    [[game hand:1] takeCard:[CanastaCard newWithRank:SEVEN suit:CLUBS]];
+                    
+                    game.turn = 1;
+                    
+                    [[@([game meldSlotCount]) should] equal:@2];
+                    
+                    [game draw];
+                    
+                    [[@([game canStageMeld:0 cardIndex:0]) should] beYes];
+                    [[@([game canStageMeld:1 cardIndex:0]) should] beNo];
+                    [[@([game canStageMeld:0 cardIndex:1]) should] beNo];
+                    
+                    [game stageMeld:0 cardIndex:0];
+                    [game stageDiscard:0];
+                    [game finishTurn];
+                    
+                    CanastaMeld *meld = [game team:1].melds[0];
+                    [[meld.cards[0] should] equal:[CanastaCard newWithRank:SEVEN suit:DIAMONDS]];
+                    [[meld.cards[1] should] equal:[CanastaCard newWithRank:SEVEN suit:HEARTS]];
+                    [[meld.cards[2] should] equal:[CanastaCard newWithRank:SEVEN suit:SPADES]];
+                    [[meld.cards[3] should] equal:[CanastaCard newWithRank:SEVEN suit:CLUBS]];
+                    
+                    game.turn = 1;
+                    
+                    [[[meld size] should] equal:@4];
+                    
+                    [game unstageTopCardInMeld:0];
+                    [[[meld size] should] equal:@4];
                 });
             });
         });

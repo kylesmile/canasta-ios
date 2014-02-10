@@ -22,6 +22,16 @@ describe(@"Canasta Staged Meld", ^{
         
         [[card should] equal:[CanastaCard newWithRank:ACE suit:HEARTS]];
     });
+    
+    it(@"can be associated with a real meld", ^{
+        CanastaMeld *realMeld = [CanastaMeld newWithCards:@[[CanastaCard newWithRank:ACE suit:SPADES], [CanastaCard newWithRank:ACE suit:CLUBS], [CanastaCard newWithRank:ACE suit:DIAMONDS]]];
+        
+        CanastaStagedMeld *stagedMeld = [CanastaStagedMeld newWithMeld:realMeld];
+        
+        [[stagedMeld.meld should] equal:realMeld];
+        
+        [[@([stagedMeld rank]) should] equal:@(ACE)];
+    });
 });
 
 SPEC_END

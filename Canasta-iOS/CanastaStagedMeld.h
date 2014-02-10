@@ -10,6 +10,11 @@
 
 @interface CanastaStagedMeld : CanastaMeld
 
++ (instancetype)newWithMeld:(CanastaMeld *)meld;
+
 - (CanastaCard *)removeTopCard;
+- (instancetype)initWithMeld:(CanastaMeld *)meld;
+
+@property (nonatomic, strong) CanastaMeld *meld;
 
 @end

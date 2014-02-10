@@ -26,14 +26,6 @@
 
 #pragma mark - Initialization
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        _stagedMelds = [NSMutableArray new];
-    }
-    return self;
-}
-
 - (NSArray *)hands {
     if (!_hands) {
         _hands = @[[CanastaHand new], [CanastaHand new], [CanastaHand new], [CanastaHand new]];
@@ -63,6 +55,18 @@
         [_discardPile discard:[self.deck draw]];
     }
     return _discardPile;
+}
+
+- (NSMutableArray *)stagedMelds {
+    if (!_stagedMelds) {
+        _stagedMelds = [NSMutableArray new];
+    }
+    if ([_stagedMelds count] < [[self currentTeam].melds count]) {
+        for (NSInteger i = 0; i < [[self currentTeam].melds count]; i++) {
+            [_stagedMelds addObject:[CanastaStagedMeld newWithMeld:[self currentTeam].melds[i]]];
+        }
+    }
+    return _stagedMelds;
 }
 
 - (NSUInteger)turn {
@@ -124,15 +128,15 @@
     if (self.stagedDiscard == nil) return NO;
     if (!self.hasDrawn) return NO;
     
-    for (CanastaStagedMeld *meld in self.stagedMelds) {
-        if ([[meld size] integerValue] < 3) return NO;
+    for (CanastaStagedMeld *stagedMeld in self.stagedMelds) {
+        if (!stagedMeld.meld && [[stagedMeld size] integerValue] < 3) return NO;
     }
     
     return YES;
 }
 
 - (BOOL)canStageMeld:(NSUInteger)meld cardIndex:(NSUInteger)index {
-    CanastaCard *card = [self hand:self.turn].cards[index];
+    CanastaCard *card = [self currentHand].cards[index];
     
     if (meld + 1 == [self meldSlotCount] && [card isWild]) return NO;
     if ([card isWild]) return YES;
@@ -140,11 +144,11 @@
     if ([card isBlackThree]) return NO;
     if (meld + 1 > [self meldSlotCount]) return NO;
     
-    if (meld + 1 <= [self.stagedMelds count]) {
+    if (meld + 1 < [self meldSlotCount]) {
         if ([self.stagedMelds[meld] rank] != card.rank) return NO;
     }
     
-    for (NSInteger i = 0; i < [self.stagedMelds count]; i++) {
+    for (NSInteger i = 0; i < [self meldSlotCount] - 1; i++) {
         if (i != meld) {
             if ([self.stagedMelds[i] rank] == card.rank) {
                 return NO;
@@ -166,13 +170,13 @@
 }
 
 - (void)unstageDiscard {
-    [[self hand:self.turn] takeCard:self.stagedDiscard];
+    [[self currentHand] takeCard:self.stagedDiscard];
     self.stagedDiscard = nil;
 }
 
 - (void)stageDiscard:(NSUInteger)index {
-    CanastaCard *cardToStage = [[self hand:self.turn] playCard:index];
-    if (self.stagedDiscard) [[self hand:self.turn] takeCard:self.stagedDiscard];
+    CanastaCard *cardToStage = [[self currentHand] playCard:index];
+    if (self.stagedDiscard) [[self currentHand] takeCard:self.stagedDiscard];
     self.stagedDiscard = cardToStage;
 }
 
@@ -182,7 +186,7 @@
             [self.stagedMelds addObject:[CanastaStagedMeld new]];
         }
         
-        CanastaCard *meldCard = [[self hand:self.turn] playCard:index];
+        CanastaCard *meldCard = [[self currentHand] playCard:index];
         
         [self.stagedMelds[meld] addCard:meldCard];
         
@@ -192,21 +196,24 @@
 
 - (void)unstageTopCardInMeld:(NSUInteger)meld {
     CanastaStagedMeld *stagedMeld = self.stagedMelds[meld];
-    CanastaCard *card = [stagedMeld removeTopCard];
-    [[self hand:self.turn] takeCard:card];
     
-    if ([[stagedMeld size] isEqual:@0]) {
-        [self.stagedMelds removeObjectAtIndex:meld];
+    if ([[stagedMeld size] integerValue] > 0) {
+        CanastaCard *card = [stagedMeld removeTopCard];
+        [[self currentHand] takeCard:card];
+        
+        if ([[stagedMeld size] isEqual:@0] && meld + 1 > [[self currentTeam].melds count]) {
+            [self.stagedMelds removeObjectAtIndex:meld];
+        }
+        
+        [self notify:@"staged melds changed"];
     }
-    
-    [self notify:@"staged melds changed"];
 }
 
 - (void)finishTurn {
     if ([self turnValid]) {
         [self.discardPile discard:self.stagedDiscard];
         
-        CanastaTeam *team = [self team:[self teamNumberForPlayer:self.turn]];
+        CanastaTeam *team = [self currentTeam];
         
         for (CanastaStagedMeld *meld in self.stagedMelds) {
             [team meldRank:[meld rank] cards:meld.cards];
@@ -217,20 +224,11 @@
         self.stagedDiscard = nil;
         self.hasDrawn = NO;
         [self nextTurn];
+        
         [self notify:@"discard pile changed"];
         [self notify:@"new turn"];
     }
 }
-
-//- (void)meldRank:(RANK)rank cardIndexes:(NSIndexSet *)indexes {
-//    [[self team:[self teamNumberForPlayer:self.turn]] meldRank:rank cards:[[self hand:self.turn] playCards:indexes]];
-//}
-//
-//- (void)discard:(NSUInteger)cardIndex {
-//    CanastaCard *card = [[self hand:self.turn] playCard:cardIndex];
-//    [self.discardPile discard:card];
-//    [self nextTurn];
-//}
 
 #pragma mark - Helper Methods
 
@@ -260,6 +258,14 @@
 - (void)notify:(NSString *)name {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter postNotificationName:name object:self];
+}
+
+- (CanastaHand *)currentHand {
+    return [self hand:self.turn];
+}
+
+- (CanastaTeam *)currentTeam {
+    return [self team:[self teamNumberForPlayer:self.turn]];
 }
 
 @end
